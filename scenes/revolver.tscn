@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://du17q4dk4hcuw"]
+
+[ext_resource type="Script" path="res://scripts/Gun.gd" id="1_4dh6s"]
+[ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="2_o2lrm"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_xexh0"]
+
+[node name="Pivot" type="Node2D"]
+script = ExtResource("1_4dh6s")
+
+[node name="Revolver" type="Node2D" parent="."]
+position = Vector2(12, 0)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Revolver"]
+position = Vector2(4.76837e-07, 0)
+rotation = -3.15032
+scale = Vector2(12, 12.786)
+mesh = SubResource("QuadMesh_xexh0")
+texture = ExtResource("2_o2lrm")

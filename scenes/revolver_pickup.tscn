@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmelsyk3e4hjw"]
+
+[ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="1_h4fwp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_24m3m"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_jnnlg"]
+
+[node name="Revolver_Pickup" type="Node2D"]
+
+[node name="PickupArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_24m3m")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(4.76837e-07, 0)
+rotation = -3.15032
+scale = Vector2(12, 12.786)
+mesh = SubResource("QuadMesh_jnnlg")
+texture = ExtResource("1_h4fwp")

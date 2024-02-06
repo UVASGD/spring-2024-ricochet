@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvk6a7nmvnixm"]
+
+[ext_resource type="Texture2D" uid="uid://bnx5fi80poc8d" path="res://images/Shotgun.png" id="1_hy2p6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sfh8o"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_c5e23"]
+
+[node name="Shotgun_Pickup" type="Node2D"]
+
+[node name="PickupArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+shape = SubResource("CircleShape2D_sfh8o")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(4.76837e-07, 0)
+rotation = -3.15032
+scale = Vector2(12, 12.786)
+mesh = SubResource("QuadMesh_c5e23")
+texture = ExtResource("1_hy2p6")
