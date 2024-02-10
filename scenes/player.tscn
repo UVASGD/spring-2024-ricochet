@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1gn05301x4j3"]
+[gd_scene load_steps=8 format=3 uid="uid://d1gn05301x4j3"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_op0tq"]
 [ext_resource type="Texture2D" uid="uid://3dl3vapbbyyf" path="res://images/1stGuy.png" id="2_cb8at"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="2_fxh18"]
 [ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="3_m6ad3"]
+[ext_resource type="PackedScene" uid="uid://c7p7euxhfpbeg" path="res://scenes/gun.tscn" id="5_dfevr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2use6"]
 
@@ -28,6 +29,7 @@ zoom = Vector2(2, 2)
 script = ExtResource("2_fxh18")
 
 [node name="Gun" type="Node2D" parent="CharacterBody2D/Pivot"]
+visible = false
 position = Vector2(12, 0)
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="CharacterBody2D/Pivot/Gun"]
@@ -37,13 +39,20 @@ scale = Vector2(12, 12.786)
 mesh = SubResource("QuadMesh_4nh5r")
 texture = ExtResource("3_m6ad3")
 
+[node name="Gun2" parent="CharacterBody2D/Pivot" instance=ExtResource("5_dfevr")]
+position = Vector2(11, 0)
+
 [node name="DownRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
 
 [node name="UpRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
 target_position = Vector2(0, -50)
 
 [node name="LeftRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
 target_position = Vector2(-50, 0)
 
 [node name="RightRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
 target_position = Vector2(50, 0)

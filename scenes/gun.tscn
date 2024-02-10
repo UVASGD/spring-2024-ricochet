@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7p7euxhfpbeg"]
+
+[ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="1_u8wv8"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_xgtig"]
+
+[node name="Gun" type="Node2D"]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(4.76837e-07, 0)
+rotation = -3.15032
+scale = Vector2(12, 12.786)
+mesh = SubResource("QuadMesh_xgtig")
+texture = ExtResource("1_u8wv8")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+rotation = -1.5708
+target_position = Vector2(-8.74228e-07, 20)
