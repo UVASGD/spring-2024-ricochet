@@ -16,3 +16,9 @@ texture = ExtResource("1_u8wv8")
 [node name="RayCast2D" type="RayCast2D" parent="."]
 rotation = -1.5708
 target_position = Vector2(-8.74228e-07, 20)
+
+[node name="KillRayCast2D" type="RayCast2D" parent="."]
+rotation = 3.14159
+target_position = Vector2(-204, -0.00147696)
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="KillRayCast2D"]
