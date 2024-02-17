@@ -34,14 +34,21 @@ func _physics_process(delta):
 		if is_on_floor():
 			Shot = false
 	elif not is_on_floor():
+		# Logic to decelerate mid-air. Subject to change/removal
+		# Players can immediately decelerate in the x direction after launching if they hold in the opposite direction.
+		# It may be a good idea to only allow this x frames after the player is first airborne.
+		# Currently decelerates 5 velocity per frame.
+		var decel_rate = 5
 		if velocity.x > 0: 
 			if Input.is_action_pressed("walkLeft"):
-				velocity.x = 0
-				velocity.y = 0
-		if velocity.x < 0:
-			if Input.is_action_just_pressed("walkRight"):
-				velocity.x = 0	
-				velocity.y = 0
+				velocity.x -= decel_rate
+				# velocity.y = 0
+				if velocity.x < 0: velocity.x = 0
+		elif velocity.x < 0:
+			if Input.is_action_pressed("walkRight"):
+				velocity.x += decel_rate
+				# velocity.y = 0
+				if velocity.x > 0: velocity.x = 0
 	elif direction and is_on_floor():
 		Speed = move_toward(Speed, TopSpeed, SpeedInterval)
 		velocity.x = direction * Speed
