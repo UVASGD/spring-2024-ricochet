@@ -20,7 +20,7 @@ func _physics_process(delta):
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
 		power = coolCalcRayCast(deg)
-		print(power)
+		print("Power: " + str(power))
 		velocity += -ShootVector*power
 		Shot = true
 	
