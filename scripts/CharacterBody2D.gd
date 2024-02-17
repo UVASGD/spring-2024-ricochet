@@ -12,10 +12,11 @@ var Shot = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Initializes vectors and values needed for shot calculation
 func _physics_process(delta):
-	var ShootVector = (get_global_mouse_position() - $".".position).normalized()
+	# var ShootVector = (get_global_mouse_position() - $".".position).normalized()
 	var deg = int(rad_to_deg($Pivot.get_rotation())) % 360
 	if deg < 0:
 		deg = deg + 360
+	var ShootVector = Vector2.RIGHT.rotated(deg_to_rad(deg))
 	var power = 0
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
