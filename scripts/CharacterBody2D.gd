@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var Speed = 0
-const PlayerFriction = 0.07
+const PlayerFriction = 0.7
 const TopSpeed = 200.0
 const SpeedInterval = 15
 const VelocityInterval = 25
@@ -20,6 +20,7 @@ func _physics_process(delta):
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
 		power = coolCalcRayCast(deg)
+		print("Angle: " + str(deg))
 		print("Power: " + str(power))
 		velocity += -ShootVector*power
 		Shot = true
