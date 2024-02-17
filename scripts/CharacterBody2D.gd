@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var Speed = 0
-const PlayerFriction = 0.7
+const PlayerFriction = 1.5
 const TopSpeed = 200.0
 const SpeedInterval = 15
 const VelocityInterval = 25
@@ -55,8 +55,8 @@ func _physics_process(delta):
 		Speed = move_toward(Speed, TopSpeed, SpeedInterval)
 		velocity.x = direction * Speed
 	elif is_on_floor():
-		Speed = move_toward(Speed, 0, SpeedInterval)
-		velocity.x = move_toward(velocity.x, 0, VelocityInterval)
+		Speed = move_toward(Speed, 0, SpeedInterval*PlayerFriction)
+		velocity.x = move_toward(velocity.x, 0, VelocityInterval*PlayerFriction)
 	move_and_slide()
 	
 func coolCalcRayCast(deg: int) -> int:
