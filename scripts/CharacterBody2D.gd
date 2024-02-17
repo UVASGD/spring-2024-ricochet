@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var Speed = 0
-const PlayerFriction = 0.07
+const PlayerFriction = 1.5
 const TopSpeed = 200.0
 const SpeedInterval = 15
 const VelocityInterval = 25
@@ -12,14 +12,16 @@ var Shot = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Initializes vectors and values needed for shot calculation
 func _physics_process(delta):
-	var ShootVector = (get_global_mouse_position() - $".".position).normalized()
+	# var ShootVector = (get_global_mouse_position() - $".".position).normalized()
 	var deg = int(rad_to_deg($Pivot.get_rotation())) % 360
 	if deg < 0:
 		deg = deg + 360
+	var ShootVector = Vector2.RIGHT.rotated(deg_to_rad(deg))
 	var power = 0
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
 		power = coolCalcRayCast(deg)
+		print("Angle: " + str(deg))
 		print("Power: " + str(power))
 		velocity += -ShootVector*power
 		Shot = true
@@ -34,20 +36,27 @@ func _physics_process(delta):
 		if is_on_floor():
 			Shot = false
 	elif not is_on_floor():
+		# Logic to decelerate mid-air. Subject to change/removal
+		# Players can immediately decelerate in the x direction after launching if they hold in the opposite direction.
+		# It may be a good idea to only allow this x frames after the player is first airborne.
+		# Currently decelerates 5 velocity per frame.
+		var decel_rate = 5
 		if velocity.x > 0: 
 			if Input.is_action_pressed("walkLeft"):
-				velocity.x = 0
-				velocity.y = 0
-		if velocity.x < 0:
-			if Input.is_action_just_pressed("walkRight"):
-				velocity.x = 0	
-				velocity.y = 0
+				velocity.x -= decel_rate
+				# velocity.y = 0
+				if velocity.x < 0: velocity.x = 0
+		elif velocity.x < 0:
+			if Input.is_action_pressed("walkRight"):
+				velocity.x += decel_rate
+				# velocity.y = 0
+				if velocity.x > 0: velocity.x = 0
 	elif direction and is_on_floor():
 		Speed = move_toward(Speed, TopSpeed, SpeedInterval)
 		velocity.x = direction * Speed
 	elif is_on_floor():
-		Speed = move_toward(Speed, 0, SpeedInterval)
-		velocity.x = move_toward(velocity.x, 0, VelocityInterval)
+		Speed = move_toward(Speed, 0, SpeedInterval*PlayerFriction)
+		velocity.x = move_toward(velocity.x, 0, VelocityInterval*PlayerFriction)
 	move_and_slide()
 	
 func coolCalcRayCast(deg: int) -> int:
