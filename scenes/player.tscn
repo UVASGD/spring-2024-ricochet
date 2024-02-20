@@ -1,14 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://d1gn05301x4j3"]
+[gd_scene load_steps=10 format=3 uid="uid://d3w74knuobnpg"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_op0tq"]
 [ext_resource type="Texture2D" uid="uid://3dl3vapbbyyf" path="res://images/1stGuy.png" id="2_cb8at"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="2_fxh18"]
 [ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="3_m6ad3"]
-[ext_resource type="PackedScene" uid="uid://c7p7euxhfpbeg" path="res://scenes/gun.tscn" id="5_dfevr"]
+[ext_resource type="PackedScene" uid="uid://bxrek0u2dplk1" path="res://scenes/gun.tscn" id="5_dfevr"]
+[ext_resource type="Texture2D" uid="uid://cyow1eps2hr8d" path="res://images/Sniper.png" id="6_6oyuk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2use6"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_4nh5r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_il0p2"]
+size = Vector2(19, 26)
 
 [node name="Node2D" type="Node2D"]
 
@@ -56,3 +60,18 @@ target_position = Vector2(-50, 0)
 [node name="RightRayCast" type="RayCast2D" parent="CharacterBody2D"]
 visible = false
 target_position = Vector2(50, 0)
+
+[node name="PlayerPickupArea" type="Area2D" parent="CharacterBody2D"]
+position = Vector2(44, -34)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/PlayerPickupArea"]
+position = Vector2(-43.5, 35)
+shape = SubResource("RectangleShape2D_il0p2")
+debug_color = Color(0.960784, 0, 0.513726, 0.419608)
+
+[node name="PickupIcon" type="Sprite2D" parent="CharacterBody2D/PlayerPickupArea"]
+position = Vector2(-44, 5)
+texture = ExtResource("6_6oyuk")
+
+[connection signal="area_entered" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_pickup_area_area_entered"]
+[connection signal="area_exited" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_player_pickup_area_area_exited"]

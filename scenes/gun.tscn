@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7p7euxhfpbeg"]
+[gd_scene load_steps=5 format=3 uid="uid://bxrek0u2dplk1"]
 
 [ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="1_pudrd"]
 [ext_resource type="Texture2D" uid="uid://bnx5fi80poc8d" path="res://images/Shotgun.png" id="2_8ixa2"]
@@ -45,5 +45,5 @@ target_position = Vector2(-204, -0.00147696)
 rotation = -3.14159
 scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("SpriteFrames_hgev0")
-animation = &"revolver"
+animation = &"shotgun"
 flip_v = true
