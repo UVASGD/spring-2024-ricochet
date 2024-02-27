@@ -50,7 +50,8 @@ func has_only_one_gun() -> bool: # used only for the beginning of the game, when
 			num_of_guns += 1
 	return num_of_guns == 1
 	
-func get_inactive_gun(): # should return the current gun if player only has one gun
+func get_inactive_gun(): 
+	# should return the current gun if player only has one gun
 	if has_only_one_gun():
 		return active_gun
 	for gun in gun_storage:
@@ -58,14 +59,10 @@ func get_inactive_gun(): # should return the current gun if player only has one 
 				return gun
 
 func swapGun(id: int) -> void:
-		
-	# if gun_storage[id] == true:
-		active_gun = id
-		gun_changed.emit(active_gun)
-		gunSprite.play(weapons.find_key(active_gun).to_lower())
-	# else:
-		# print("Gun change failed (player does not have gun in inventory)")
-		
+	active_gun = id
+	gun_changed.emit(active_gun)
+	gunSprite.play(weapons.find_key(active_gun).to_lower())
+
 func add_gun(id: int) -> void:
 	gun_storage[id] = true
 	
@@ -75,10 +72,10 @@ func remove_gun(id: int) -> void:
 func _on_pickup_area_area_entered(area: Object):
 	if area.name == "PickupArea":
 		pickupIcon.show()
+		# For all pickups, please name them in the format of Name_Pickup
 		var parentName: String = area.get_parent().name
 		var gunName: String = parentName.left(parentName.find("_"))
 		pickupableItem = gunName.to_upper()
-		
 
 func _on_player_pickup_area_area_exited(area: Object):
 	if area.name == "PickupArea":

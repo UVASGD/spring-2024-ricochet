@@ -11,7 +11,7 @@ var Shot = false
 @onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
 
-var active_gun := 0
+var active_gun := 0 # this value is updated by the _on_gun_changed signal on Gun.gd
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
