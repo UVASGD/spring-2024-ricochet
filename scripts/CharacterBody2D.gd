@@ -8,6 +8,11 @@ const VelocityInterval = 25
 const ShootInterval = 1
 var Shot = false
 
+@onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
+@onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
+
+var active_gun := 0
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Initializes vectors and values needed for shot calculation
@@ -59,6 +64,14 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, VelocityInterval*PlayerFriction)
 	move_and_slide()
 	
+	# Trying out rotating arm stuff
+	frontArm.look_at(get_global_mouse_position())
+	backArm.look_at(get_global_mouse_position())
+	if (get_global_mouse_position().x < self.global_position.x):
+		$CollisionShape2D/PlayerSprite.scale.x = -1
+	else:
+		$CollisionShape2D/PlayerSprite.scale.x = 1
+	
 func coolCalcRayCast(deg: int) -> int:
 	var power = 0
 	var raycast := $Pivot/Gun2/RayCast2D
@@ -66,7 +79,13 @@ func coolCalcRayCast(deg: int) -> int:
 	if $Pivot/Gun2/RayCast2D.is_colliding():
 		var point = $Pivot/Gun2/RayCast2D.get_collision_point()
 		var distance = origin.distance_to(point)
-		power = (500-distance)
+		match active_gun:
+			0: # revolver
+				power = 500 - distance
+			1: # shotgun
+				power = 700 - distance
+			_:
+				power = 500 - distance
 	return power
 	
 	
@@ -119,4 +138,6 @@ func calcRayCast(deg) -> int:
 			DownPower = (500-DownDistance) #* (1-(abs(deg-90.0)/90.0))
 		return RightPower if RightPower > DownPower else DownPower
 	return 0
-	
+
+func _on_gun_changed(gun_id):
+	active_gun = gun_id

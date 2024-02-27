@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://d3w74knuobnpg" path="res://scenes/player.tscn" id="1_y30vh"]
 [ext_resource type="PackedScene" uid="uid://cvlrsdps5x56c" path="res://scenes/revolver_pickup.tscn" id="2_t1hqp"]
-[ext_resource type="PackedScene" path="res://scenes/shotgun_pickup.tscn" id="3_p85wr"]
-[ext_resource type="PackedScene" path="res://scenes/sniper_pickup.tscn" id="4_0byhm"]
+[ext_resource type="PackedScene" uid="uid://dv7j1okf6581n" path="res://scenes/shotgun_pickup.tscn" id="3_p85wr"]
+[ext_resource type="PackedScene" uid="uid://c5e4kj0ucf0as" path="res://scenes/sniper_pickup.tscn" id="4_0byhm"]
 [ext_resource type="Texture2D" uid="uid://6j8gg2sn8imd" path="res://images/tilemap.png" id="5_igohi"]
 [ext_resource type="PackedScene" uid="uid://cg2bxf6x1jrll" path="res://scenes/enemy.tscn" id="6_0dhxh"]
 [ext_resource type="Script" path="res://scripts/Deathzone.gd" id="7_ithtj"]
