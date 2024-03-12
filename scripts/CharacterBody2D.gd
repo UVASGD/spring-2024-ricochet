@@ -107,7 +107,7 @@ func coolCalcRayCast(deg: int) -> int:
 				shotCooldown = 30
 			1: # shotgun
 				power = 700 - distance
-				shotCooldown = 300
+				shotCooldown = 60
 			_:
 				power = 500 - distance
 				shotCooldown = 10
