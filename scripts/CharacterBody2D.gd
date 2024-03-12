@@ -7,6 +7,9 @@ const SpeedInterval = 15
 const VelocityInterval = 25
 const ShootInterval = 1
 var Shot = false
+# Ammo is stored on the player. It works with any gun!
+const maxAmmo = 10
+var ammo = 10
 
 @onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
@@ -26,10 +29,13 @@ func _physics_process(delta):
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
 		power = coolCalcRayCast(deg)
-		print("Angle: " + str(deg))
-		print("Power: " + str(power))
-		velocity += -ShootVector*power
-		Shot = true
+		if ammo > 0:
+			ammo -= 1
+			print("Angle: " + str(deg))
+			print("Power: " + str(power))
+			velocity += -ShootVector*power
+			Shot = true
+		print("Ammo: " + str(ammo))
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -71,6 +77,15 @@ func _physics_process(delta):
 		$CollisionShape2D/PlayerSprite.scale.x = -1
 	else:
 		$CollisionShape2D/PlayerSprite.scale.x = 1
+		
+func _process(delta):
+	if Input.is_action_just_pressed("Reload"):
+		reload()
+	
+	
+func reload():
+	ammo = maxAmmo
+	print("Reloaded!")
 	
 func coolCalcRayCast(deg: int) -> int:
 	var power = 0
@@ -89,7 +104,7 @@ func coolCalcRayCast(deg: int) -> int:
 	return power
 	
 	
-	
+# Unused old raycast
 func calcRayCast(deg) -> int:
 	var Origin = $DownRayCast.global_transform.origin #gets center of player relative to down raycast node
 	var RightPower = 0
