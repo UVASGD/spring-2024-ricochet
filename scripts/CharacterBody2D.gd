@@ -11,6 +11,10 @@ var Shot = false
 const maxAmmo = 10
 var ammo = 10
 
+# Shot cooldown
+# When this variable is 0, the gun can be fired again!
+var shotCooldown = 0
+
 @onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
 
@@ -26,10 +30,13 @@ func _physics_process(delta):
 		deg = deg + 360
 	var ShootVector = Vector2.RIGHT.rotated(deg_to_rad(deg))
 	var power = 0
+	if shotCooldown > 0:
+		shotCooldown -= 1
+		print(shotCooldown)
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
-		power = coolCalcRayCast(deg)
-		if ammo > 0:
+		if ammo > 0 && shotCooldown == 0:
+			power = coolCalcRayCast(deg)
 			ammo -= 1
 			print("Angle: " + str(deg))
 			print("Power: " + str(power))
@@ -97,10 +104,13 @@ func coolCalcRayCast(deg: int) -> int:
 		match active_gun:
 			0: # revolver
 				power = 500 - distance
+				shotCooldown = 30
 			1: # shotgun
 				power = 700 - distance
+				shotCooldown = 300
 			_:
 				power = 500 - distance
+				shotCooldown = 10
 	return power
 	
 	
