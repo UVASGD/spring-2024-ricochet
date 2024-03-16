@@ -3,6 +3,7 @@ extends Node2D
 @onready var killRayCast := $Gun2/KillRayCast2D
 @onready var gunSprite := $Gun2/GunSprite
 @onready var pickupIcon := $"../PlayerPickupArea/PickupIcon"
+@onready var nozzle := $"Gun2/Nozzle"
 
 var pickupableItem = null
 
@@ -27,8 +28,11 @@ func _ready():
 func _process(delta):
 	look_at(get_global_mouse_position())
 	var hit_collider : Object = killRayCast.get_collider()
-	if hit_collider and hit_collider.name == "Enemy":
-		if Input.is_action_just_pressed("Shoot"):
+	if Input.is_action_just_pressed("Shoot"):
+		var particle_instance = load("res://scenes/gunfire_particle.tscn").instantiate()
+		add_child(particle_instance)
+		particle_instance.global_position = nozzle.global_position 
+		if hit_collider and hit_collider.name == "Enemy":
 			print("enemy killed")
 	
 	if Input.is_action_just_pressed("Swap"):

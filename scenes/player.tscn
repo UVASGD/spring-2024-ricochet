@@ -99,6 +99,9 @@ texture = ExtResource("3_m6ad3")
 [node name="Gun2" parent="CharacterBody2D/Pivot" instance=ExtResource("5_dfevr")]
 position = Vector2(15, 0)
 
+[node name="Nozzle" type="Node2D" parent="CharacterBody2D/Pivot/Gun2"]
+position = Vector2(9, -1)
+
 [connection signal="area_entered" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_pickup_area_area_entered"]
 [connection signal="area_exited" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_player_pickup_area_area_exited"]
 [connection signal="gun_changed" from="CharacterBody2D/Pivot" to="CharacterBody2D" method="_on_gun_changed"]
