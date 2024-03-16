@@ -32,11 +32,12 @@ func _physics_process(delta):
 	var power = 0
 	if shotCooldown > 0:
 		shotCooldown -= 1
-		print(shotCooldown)
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
 		if ammo > 0 && shotCooldown == 0:
-			power = coolCalcRayCast(deg)
+			var maxPower = getMaxPower()
+			power = coolCalcRayCast(deg, maxPower)
+			shotCooldown = getShotCooldown()
 			ammo -= 1
 			print("Angle: " + str(deg))
 			print("Power: " + str(power))
@@ -94,23 +95,33 @@ func reload():
 	ammo = maxAmmo
 	print("Reloaded!")
 	
-func coolCalcRayCast(deg: int) -> int:
+# todo we COULD merge these two match statements if we add more properties to the guns.
+func getMaxPower() -> int:
+	match active_gun:
+			0: # revolver
+				return 500
+			1: # shotgun
+				return 700
+			_:
+				return 500
+				
+func getShotCooldown() -> int:
+	match active_gun:
+			0: # revolver
+				return 30
+			1: # shotgun
+				return 60
+			_:
+				return 10
+	
+func coolCalcRayCast(deg: int, maxPower: int) -> int:
 	var power = 0
 	var raycast := $Pivot/Gun2/RayCast2D
 	var origin 	= $Pivot/Gun2/RayCast2D.global_transform.origin
 	if $Pivot/Gun2/RayCast2D.is_colliding():
 		var point = $Pivot/Gun2/RayCast2D.get_collision_point()
 		var distance = origin.distance_to(point)
-		match active_gun:
-			0: # revolver
-				power = 500 - distance
-				shotCooldown = 30
-			1: # shotgun
-				power = 700 - distance
-				shotCooldown = 60
-			_:
-				power = 500 - distance
-				shotCooldown = 10
+		power = maxPower - distance
 	return power
 	
 	
