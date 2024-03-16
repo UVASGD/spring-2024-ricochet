@@ -4,8 +4,13 @@ extends Node2D
 @onready var gunSprite := $Gun2/GunSprite
 @onready var pickupIcon := $"../PlayerPickupArea/PickupIcon"
 @onready var nozzle := $"Gun2/Nozzle"
+@onready var player = get_parent()
 
 var pickupableItem = null
+var nearbyArea: Area2D = null
+
+var scenes = [load("res://scenes/revolver_pickup.tscn"), load("res://scenes/shotgun_pickup.tscn"), 
+load("res://scenes/sniper_pickup.tscn")]
 
 signal gun_changed(gun_id)
 
@@ -43,7 +48,14 @@ func _process(delta):
 	if Input.is_action_just_pressed("Pickup") and pickupableItem != null:
 		# if player already has this gun don't run logic
 		if !gun_storage[weapons[pickupableItem]]: 
+			# delete the pickup
+			nearbyArea.get_parent().queue_free()
+			
 			if !has_only_one_gun():
+				var instance: Node2D
+				instance = scenes[active_gun].instantiate()
+				get_parent().get_parent().add_child(instance)
+				instance.position = player.position
 				remove_gun(active_gun)
 			add_gun(weapons[pickupableItem])
 			swapGun(weapons[pickupableItem])
@@ -78,16 +90,18 @@ func remove_gun(id: int) -> void:
 	print("Removed from inventory: " + weapons.find_key(id))
 	gun_storage[id] = false
 
-func _on_pickup_area_area_entered(area: Object):
+func _on_pickup_area_area_entered(area: Area2D):
 	if area.name == "PickupArea":
 		pickupIcon.show()
+		nearbyArea = area
 		# For all pickups, please name them in the format of Name_Pickup
 		var parentName: String = area.get_parent().name
 		var gunName: String = parentName.left(parentName.find("_"))
 		pickupableItem = gunName.to_upper()
 
-func _on_player_pickup_area_area_exited(area: Object):
+func _on_player_pickup_area_area_exited(area: Area2D):
 	if area.name == "PickupArea":
 		pickupIcon.hide()
 		pickupableItem = null
+		nearbyArea = null
 		
