@@ -35,10 +35,11 @@ func _process(delta):
 		if hit_collider and hit_collider.name == "Enemy":
 			print("enemy killed")
 	
+	# Press W to swap.
 	if Input.is_action_just_pressed("Swap"):
-		print(active_gun)
 		swapGun(get_inactive_gun())
 	
+	# Press S to pick up.
 	if Input.is_action_just_pressed("Pickup") and pickupableItem != null:
 		# if player already has this gun don't run logic
 		if !gun_storage[weapons[pickupableItem]]: 
@@ -58,6 +59,7 @@ func get_inactive_gun():
 	# should return the current gun if player only has one gun
 	if has_only_one_gun():
 		return active_gun
+		
 	for gun in gun_storage:
 			if gun_storage[gun] and gun != active_gun:
 				return gun
@@ -65,12 +67,15 @@ func get_inactive_gun():
 func swapGun(id: int) -> void:
 	active_gun = id
 	gun_changed.emit(active_gun)
+	print("Gun switched to " + weapons.find_key(active_gun))
 	gunSprite.play(weapons.find_key(active_gun).to_lower())
 
 func add_gun(id: int) -> void:
+	print("Added to inventory: " + weapons.find_key(id))
 	gun_storage[id] = true
 	
 func remove_gun(id: int) -> void:
+	print("Removed from inventory: " + weapons.find_key(id))
 	gun_storage[id] = false
 
 func _on_pickup_area_area_entered(area: Object):

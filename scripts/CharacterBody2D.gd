@@ -7,6 +7,13 @@ const SpeedInterval = 15
 const VelocityInterval = 25
 const ShootInterval = 1
 var Shot = false
+# Ammo is stored on the player. It works with any gun!
+const maxAmmo = 10
+var ammo = 10
+
+# Shot cooldown
+# When this variable is 0, the gun can be fired again!
+var shotCooldown = 0
 
 @onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
@@ -23,13 +30,20 @@ func _physics_process(delta):
 		deg = deg + 360
 	var ShootVector = Vector2.RIGHT.rotated(deg_to_rad(deg))
 	var power = 0
+	if shotCooldown > 0:
+		shotCooldown -= 1
 	#If shooting, calculate power based on distance to closest wall/floor, move in direction opposite mouse
 	if Input.is_action_just_pressed("Shoot"):
-		power = coolCalcRayCast(deg)
-		print("Angle: " + str(deg))
-		print("Power: " + str(power))
-		velocity += -ShootVector*power
-		Shot = true
+		if ammo > 0 && shotCooldown == 0:
+			var maxPower = getMaxPower()
+			power = coolCalcRayCast(deg, maxPower)
+			shotCooldown = getShotCooldown()
+			ammo -= 1
+			print("Angle: " + str(deg))
+			print("Power: " + str(power))
+			velocity += -ShootVector*power
+			Shot = true
+		print("Ammo: " + str(ammo))
 	
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -71,25 +85,47 @@ func _physics_process(delta):
 		$CollisionShape2D/PlayerSprite.scale.x = -1
 	else:
 		$CollisionShape2D/PlayerSprite.scale.x = 1
+		
+func _process(delta):
+	if Input.is_action_just_pressed("Reload"):
+		reload()
 	
-func coolCalcRayCast(deg: int) -> int:
+	
+func reload():
+	ammo = maxAmmo
+	print("Reloaded!")
+	
+# todo we COULD merge these two match statements if we add more properties to the guns.
+func getMaxPower() -> int:
+	match active_gun:
+			0: # revolver
+				return 500
+			1: # shotgun
+				return 700
+			_:
+				return 500
+				
+func getShotCooldown() -> int:
+	match active_gun:
+			0: # revolver
+				return 30
+			1: # shotgun
+				return 60
+			_:
+				return 10
+	
+func coolCalcRayCast(deg: int, maxPower: int) -> int:
 	var power = 0
 	var raycast := $Pivot/Gun2/RayCast2D
 	var origin 	= $Pivot/Gun2/RayCast2D.global_transform.origin
 	if $Pivot/Gun2/RayCast2D.is_colliding():
 		var point = $Pivot/Gun2/RayCast2D.get_collision_point()
 		var distance = origin.distance_to(point)
-		match active_gun:
-			0: # revolver
-				power = 500 - distance
-			1: # shotgun
-				power = 700 - distance
-			_:
-				power = 500 - distance
+		power = maxPower - distance
 	return power
 	
 	
-	
+# Unused old raycast
 func calcRayCast(deg) -> int:
 	var Origin = $DownRayCast.global_transform.origin #gets center of player relative to down raycast node
 	var RightPower = 0
