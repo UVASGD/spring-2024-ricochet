@@ -17,6 +17,8 @@ var shotCooldown = 0
 
 @onready var frontArm := $"CollisionShape2D/PlayerSprite/FrontArm"
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
+@onready var nozzle := $Pivot/Gun2/Nozzle
+@onready var raycast := $Pivot/Gun2/RayCast2D
 
 var active_gun := 0 # this value is updated by the _on_gun_changed signal on Gun.gd
 
@@ -43,6 +45,11 @@ func _physics_process(delta):
 			print("Power: " + str(power))
 			velocity += -ShootVector*power
 			Shot = true
+			
+			var particle_instance = load("res://scenes/gunfire_particle.tscn").instantiate()
+			add_child(particle_instance)
+			particle_instance.global_position = nozzle.global_position 
+			particle_instance.look_at(get_global_mouse_position())
 		print("Ammo: " + str(ammo))
 	
 	if not is_on_floor():
@@ -116,14 +123,16 @@ func getShotCooldown() -> int:
 	
 func coolCalcRayCast(deg: int, maxPower: int) -> int:
 	var power = 0
-	var raycast := $Pivot/Gun2/RayCast2D
-	var origin 	= $Pivot/Gun2/RayCast2D.global_transform.origin
-	if $Pivot/Gun2/RayCast2D.is_colliding():
-		var point = $Pivot/Gun2/RayCast2D.get_collision_point()
+	var origin 	= raycast.global_transform.origin
+	if raycast.is_colliding():
+		var point = raycast.get_collision_point()
+		var particle_instance = load("res://scenes/rebound_particle.tscn").instantiate()
+		add_child(particle_instance)
+		particle_instance.global_position = nozzle.global_position 
 		var distance = origin.distance_to(point)
+		particle_instance.global_rotation = raycast.global_rotation 
 		power = maxPower - distance
 	return power
-	
 	
 # Unused old raycast
 func calcRayCast(deg) -> int:

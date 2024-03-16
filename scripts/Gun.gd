@@ -29,9 +29,6 @@ func _process(delta):
 	look_at(get_global_mouse_position())
 	var hit_collider : Object = killRayCast.get_collider()
 	if Input.is_action_just_pressed("Shoot"):
-		var particle_instance = load("res://scenes/gunfire_particle.tscn").instantiate()
-		add_child(particle_instance)
-		particle_instance.global_position = nozzle.global_position 
 		if hit_collider and hit_collider.name == "Enemy":
 			print("enemy killed")
 	

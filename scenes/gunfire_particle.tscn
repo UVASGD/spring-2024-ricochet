@@ -16,6 +16,7 @@ curve = SubResource("Curve_nmqj5")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a7a0q"]
 emission_shape = 1
 emission_sphere_radius = 1.0
+particle_flag_align_y = true
 particle_flag_disable_z = true
 spread = 20.0
 flatness = 0.08
