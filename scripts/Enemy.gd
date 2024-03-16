@@ -28,7 +28,7 @@ func _physics_process(delta):
 	if isAlert:
 		var positionDif = player.global_position.x - self.global_position.x
 		var direction = positionDif / abs(positionDif)
-		print(abs(positionDif))
+		# print(abs(positionDif))
 		if abs(positionDif) > 200 and not inSight:
 			Speed = move_toward(Speed, TopSpeed, SpeedInterval)
 			velocity.x = direction * Speed

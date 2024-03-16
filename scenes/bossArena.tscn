@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=3 uid="uid://c1x8wmn5k56yi"]
+
+[ext_resource type="Texture2D" uid="uid://6j8gg2sn8imd" path="res://images/tilemap.png" id="1_ds85p"]
+[ext_resource type="PackedScene" uid="uid://3crsa44ktuks" path="res://scenes/enemy.tscn" id="1_q8hjj"]
+[ext_resource type="PackedScene" uid="uid://d3w74knuobnpg" path="res://scenes/player.tscn" id="3_jl1pv"]
+[ext_resource type="PackedScene" uid="uid://dv7j1okf6581n" path="res://scenes/shotgun_pickup.tscn" id="4_0vi12"]
+[ext_resource type="PackedScene" uid="uid://c5e4kj0ucf0as" path="res://scenes/sniper_pickup.tscn" id="5_h8f7e"]
+[ext_resource type="Script" path="res://scripts/Deathzone.gd" id="6_4mlao"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ylp4o"]
+resource_name = "enemy"
+scenes/1/scene = ExtResource("1_q8hjj")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dc40h"]
+texture = ExtResource("1_ds85p")
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8, -8, 8)
+4:0/0 = 0
+4:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+4:0/0/physics_layer_0/angular_velocity = 0.0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, 8, 8, 8)
+3:1/0 = 0
+3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:1/0/physics_layer_0/angular_velocity = 0.0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_mgabp"]
+physics_layer_0/collision_layer = 1
+sources/1 = SubResource("TileSetAtlasSource_dc40h")
+sources/0 = SubResource("TileSetScenesCollectionSource_ylp4o")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_47ht8"]
+size = Vector2(2525, 84)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_mgabp")
+format = 2
+layer_0/tile_data = PackedInt32Array(65530, 1, 0, 65531, 1, 0, 65532, 1, 0, 65533, 1, 0, 65534, 1, 0, 65535, 1, 0, 0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 6, 1, 0, 7, 1, 0, 8, 1, 0, 9, 1, 0, 10, 1, 0, 11, 1, 0, 65529, 1, 0, 65528, 1, 0, 65527, 1, 0, 65526, 1, 0, 65525, 1, 0, 65524, 1, 0, 65517, 1, 0, 65518, 1, 0, 65519, 1, 0, 65520, 1, 0, 65521, 1, 0, 65522, 1, 0, 65523, 1, 0, 12, 1, 0, 13, 1, 0, 14, 1, 0, 15, 1, 0, 16, 1, 1, 17, 1, 1, 18, 1, 1, 19, 1, 1, 20, 1, 1, 21, 1, 1, 22, 1, 1, 23, 1, 1, 24, 1, 1, 25, 65537, 1, -65520, 65537, 0, -131056, 65537, 0, -196592, 65537, 0, -262128, 65537, 0, -327664, 65537, 0, -393200, 65537, 0, -458736, 65537, 0, -524272, 65537, 0, -589808, 65537, 0, -655344, 65537, 0, -720880, 65537, 0, -786416, 65537, 0, -851952, 131073, 1, -851951, 1, 0, -851950, 1, 0, -851949, 1, 0, -851948, 1, 0, -851947, 1, 0, -851946, 1, 0, -851945, 1, 0, -851944, 1, 0, -851943, 131073, 0, -786407, 65537, 1, -720871, 65537, 1, -655335, 65537, 1, -589799, 65537, 1, -524263, 65537, 1, -458727, 65537, 1, -393191, 65537, 1, -327655, 65537, 1, -262119, 65537, 1, -196583, 65537, 1, -131047, 65537, 1, -65511, 65537, 1, -786415, 1, 1, -786414, 1, 1, -786413, 1, 1, -786412, 1, 1, -786411, 1, 1, -786410, 1, 1, -786409, 1, 1, -786408, 1, 1, -720872, 1, 1, -720873, 1, 1, -720874, 1, 1, -720875, 1, 1, -720876, 1, 1, -720877, 1, 1, -720878, 1, 1, -720879, 1, 1, -655343, 1, 1, -589807, 1, 1, -589806, 1, 1, -589805, 1, 1, -589804, 1, 1, -589803, 1, 1, -655339, 1, 1, -655338, 1, 1, -655337, 1, 1, -655336, 1, 1, -655340, 1, 1, -655341, 1, 1, -655342, 1, 1, -524270, 1, 1, -458734, 1, 1, -393199, 1, 1, -327663, 1, 1, -458735, 1, 1, -524271, 1, 1, -262127, 1, 1, -196591, 1, 1, -131055, 1, 1, -65519, 1, 1, -65518, 1, 1, -65517, 1, 1, -131053, 1, 1, -196589, 1, 1, -262125, 1, 1, -262126, 1, 1, -327662, 1, 1, -393198, 1, 1, -524269, 1, 1, -458733, 1, 1, -393197, 1, 1, -196590, 1, 1, -131054, 1, 1, -327661, 1, 1, -524268, 1, 1, -524267, 1, 1, -589802, 1, 1, -589801, 1, 1, -589800, 1, 1, -524264, 1, 1, -524265, 1, 1, -524266, 1, 1, -458732, 1, 1, -458731, 1, 1, -458730, 1, 1, -458729, 1, 1, -458728, 1, 1, -393192, 1, 1, -393193, 1, 1, -393194, 1, 1, -393195, 1, 1, -393196, 1, 1, -327658, 1, 1, -327657, 1, 1, -327656, 1, 1, -327659, 1, 1, -327660, 1, 1, -262124, 1, 1, -262123, 1, 1, -262122, 1, 1, -262121, 1, 1, -262120, 1, 1, -196585, 1, 1, -196586, 1, 1, -196587, 1, 1, -196588, 1, 1, -196584, 1, 1, -131048, 1, 1, -131049, 1, 1, -131050, 1, 1, -131051, 1, 1, -131052, 1, 1, -65516, 1, 1, -65515, 1, 1, -65514, 1, 1, -65513, 1, 1, -65512, 1, 1, -65533, 131073, 0, -131070, 131073, 0, -196607, 131073, 0, -262144, 131073, 0, -262145, 131073, 0, -196609, 1, 1, -131073, 1, 1, -196608, 1, 1, -65537, 1, 1, -131072, 1, 1, -131071, 1, 1, -1, 1, 1, -65536, 1, 1, -65535, 1, 1, -65534, 1, 1, -262146, 131073, 1, -196611, 131073, 1, -131076, 131073, 1, -65541, 131073, 1, -6, 131073, 1, -196610, 1, 1, -131074, 1, 1, -65538, 1, 1, -2, 1, 1, -3, 1, 1, -4, 1, 1, -5, 1, 1, -65540, 1, 1, -65539, 1, 1, -131075, 1, 1, -458745, 1, 0, -458744, 1, 0, -458743, 1, 0, -458742, 1, 0, -458741, 1, 0, -131082, 0, 65536)
+
+[node name="Player" parent="." instance=ExtResource("3_jl1pv")]
+position = Vector2(90, -21)
+
+[node name="Shotgun_Pickup" parent="." instance=ExtResource("4_0vi12")]
+position = Vector2(241, -11)
+
+[node name="Sniper_Pickup" parent="." instance=ExtResource("5_h8f7e")]
+position = Vector2(387, -221)
+
+[node name="Deathzone" type="Area2D" parent="."]
+position = Vector2(93, 364)
+collision_mask = 3
+script = ExtResource("6_4mlao")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deathzone"]
+position = Vector2(-74, -17)
+shape = SubResource("RectangleShape2D_47ht8")
+
+[connection signal="body_entered" from="Deathzone" to="Deathzone" method="_on_body_entered"]
