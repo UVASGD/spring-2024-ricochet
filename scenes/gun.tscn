@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxrek0u2dplk1"]
+
+[ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="1_pudrd"]
+[ext_resource type="Texture2D" uid="uid://bnx5fi80poc8d" path="res://images/Shotgun.png" id="2_8ixa2"]
+[ext_resource type="Texture2D" uid="uid://cyow1eps2hr8d" path="res://images/Sniper.png" id="3_lyyps"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hgev0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_pudrd")
+}],
+"loop": true,
+"name": &"revolver",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8ixa2")
+}],
+"loop": true,
+"name": &"shotgun",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_lyyps")
+}],
+"loop": true,
+"name": &"sniper",
+"speed": 5.0
+}]
+
+[node name="Gun" type="Node2D"]
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+rotation = -1.5708
+target_position = Vector2(-8.74228e-07, 20)
+
+[node name="KillRayCast2D" type="RayCast2D" parent="."]
+rotation = 3.14159
+target_position = Vector2(-204, -0.00147696)
+
+[node name="GunSprite" type="AnimatedSprite2D" parent="."]
+rotation = -3.14159
+scale = Vector2(0.6, 0.6)
+sprite_frames = SubResource("SpriteFrames_hgev0")
+animation = &"shotgun"
+flip_v = true

@@ -1,15 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://3crsa44ktuks"]
+[gd_scene load_steps=9 format=3 uid="uid://3crsa44ktuks"]
 
-[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_gcetj"]
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_pdqsc"]
 [ext_resource type="Texture2D" uid="uid://3dl3vapbbyyf" path="res://images/1stGuy.png" id="2_spsjo"]
+[ext_resource type="Script" path="res://scripts/SightlinePivot.gd" id="3_nrky1"]
+[ext_resource type="Script" path="res://scripts/Sightline.gd" id="4_j8ais"]
+[ext_resource type="PackedScene" uid="uid://bxrek0u2dplk1" path="res://scenes/gun.tscn" id="4_t5frh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gnvxo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ci0bp"]
 radius = 282.016
 
+[sub_resource type="BoxMesh" id="BoxMesh_42iyg"]
+
 [node name="Enemy" type="CharacterBody2D"]
-script = ExtResource("1_gcetj")
+collision_layer = 4
+script = ExtResource("1_pdqsc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_gnvxo")
@@ -18,9 +24,27 @@ shape = SubResource("CapsuleShape2D_gnvxo")
 texture = ExtResource("2_spsjo")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_ci0bp")
+
+[node name="Pivot" type="Node2D" parent="."]
+script = ExtResource("3_nrky1")
+
+[node name="Gun" parent="Pivot" instance=ExtResource("4_t5frh")]
+position = Vector2(11, 0)
+
+[node name="Sightline" type="RayCast2D" parent="Pivot"]
+target_position = Vector2(500, 0)
+collision_mask = 3
+script = ExtResource("4_j8ais")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Pivot"]
+visible = false
+position = Vector2(246, 1.5)
+scale = Vector2(502, 7)
+mesh = SubResource("BoxMesh_42iyg")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

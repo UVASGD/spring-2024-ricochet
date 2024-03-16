@@ -1,17 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1gn05301x4j3"]
+[gd_scene load_steps=13 format=3 uid="uid://d3w74knuobnpg"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_op0tq"]
 [ext_resource type="Texture2D" uid="uid://3dl3vapbbyyf" path="res://images/1stGuy.png" id="2_cb8at"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="2_fxh18"]
+[ext_resource type="Texture2D" uid="uid://di7fly06l5131" path="res://images/TestGuyArmBack.png" id="3_dhwvp"]
+[ext_resource type="Texture2D" uid="uid://c4pbspe2er2at" path="res://images/TestGuyBodyHead.png" id="3_hd103"]
 [ext_resource type="Texture2D" uid="uid://er5wr14bks2" path="res://images/Revolver.png" id="3_m6ad3"]
+[ext_resource type="Texture2D" uid="uid://dtf63v28cxfcv" path="res://images/TestGuyArm.png" id="4_dilck"]
+[ext_resource type="PackedScene" uid="uid://bxrek0u2dplk1" path="res://scenes/gun.tscn" id="5_dfevr"]
+[ext_resource type="Texture2D" uid="uid://c1yqdsoa3f3n3" path="res://images/PickupIcon.png" id="6_y0nri"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2use6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_il0p2"]
+size = Vector2(19, 26)
 
 [sub_resource type="QuadMesh" id="QuadMesh_4nh5r"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+collision_layer = 2
 script = ExtResource("1_op0tq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
@@ -19,15 +28,66 @@ position = Vector2(0, 1)
 shape = SubResource("CapsuleShape2D_2use6")
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D/CollisionShape2D"]
+visible = false
 texture = ExtResource("2_cb8at")
+
+[node name="PlayerSprite" type="Node2D" parent="CharacterBody2D/CollisionShape2D"]
+
+[node name="HeadBody" type="Sprite2D" parent="CharacterBody2D/CollisionShape2D/PlayerSprite"]
+position = Vector2(4.76837e-07, -2.32458e-06)
+scale = Vector2(1.75, 1.625)
+texture = ExtResource("3_hd103")
+
+[node name="FrontArm" type="Sprite2D" parent="CharacterBody2D/CollisionShape2D/PlayerSprite"]
+position = Vector2(-6, -2)
+texture = ExtResource("4_dilck")
+offset = Vector2(5, 2)
+
+[node name="BackArm" type="Sprite2D" parent="CharacterBody2D/CollisionShape2D/PlayerSprite"]
+z_index = -1
+position = Vector2(-1, -3)
+texture = ExtResource("3_dhwvp")
+offset = Vector2(8, 2)
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 zoom = Vector2(2, 2)
 
+[node name="DownRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
+
+[node name="UpRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
+target_position = Vector2(0, -50)
+
+[node name="LeftRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
+target_position = Vector2(-50, 0)
+
+[node name="RightRayCast" type="RayCast2D" parent="CharacterBody2D"]
+visible = false
+target_position = Vector2(50, 0)
+
+[node name="PlayerPickupArea" type="Area2D" parent="CharacterBody2D"]
+position = Vector2(44, -34)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/PlayerPickupArea"]
+position = Vector2(-43.5, 35)
+shape = SubResource("RectangleShape2D_il0p2")
+debug_color = Color(0.960784, 0, 0.513726, 0.419608)
+
+[node name="PickupIcon" type="Sprite2D" parent="CharacterBody2D/PlayerPickupArea"]
+position = Vector2(-44, 13)
+scale = Vector2(1, 0.75)
+texture = ExtResource("6_y0nri")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D/PlayerPickupArea/PickupIcon"]
+
 [node name="Pivot" type="Node2D" parent="CharacterBody2D"]
+position = Vector2(-2, -1)
 script = ExtResource("2_fxh18")
 
 [node name="Gun" type="Node2D" parent="CharacterBody2D/Pivot"]
+visible = false
 position = Vector2(12, 0)
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="CharacterBody2D/Pivot/Gun"]
@@ -37,13 +97,12 @@ scale = Vector2(12, 12.786)
 mesh = SubResource("QuadMesh_4nh5r")
 texture = ExtResource("3_m6ad3")
 
-[node name="DownRayCast" type="RayCast2D" parent="CharacterBody2D"]
+[node name="Gun2" parent="CharacterBody2D/Pivot" instance=ExtResource("5_dfevr")]
+position = Vector2(15, 0)
 
-[node name="UpRayCast" type="RayCast2D" parent="CharacterBody2D"]
-target_position = Vector2(0, -50)
+[node name="Nozzle" type="Node2D" parent="CharacterBody2D/Pivot/Gun2"]
+position = Vector2(9, -1)
 
-[node name="LeftRayCast" type="RayCast2D" parent="CharacterBody2D"]
-target_position = Vector2(-50, 0)
-
-[node name="RightRayCast" type="RayCast2D" parent="CharacterBody2D"]
-target_position = Vector2(50, 0)
+[connection signal="area_entered" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_pickup_area_area_entered"]
+[connection signal="area_exited" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_player_pickup_area_area_exited"]
+[connection signal="gun_changed" from="CharacterBody2D/Pivot" to="CharacterBody2D" method="_on_gun_changed"]
