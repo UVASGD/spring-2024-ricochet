@@ -10,6 +10,7 @@ var Shot = false
 # Ammo is stored on the player. It works with any gun!
 const maxAmmo = 10
 var ammo = 10
+var dead : bool = false
 
 # Shot cooldown
 # When this variable is 0, the gun can be fired again!
@@ -19,13 +20,19 @@ var shotCooldown = 0
 @onready var backArm := $"CollisionShape2D/PlayerSprite/BackArm"
 @onready var nozzle := $Pivot/Gun2/Nozzle
 @onready var raycast := $Pivot/Gun2/RayCast2D
-
+@onready var globalCamera := $Camera2D
 var active_gun := 0 # this value is updated by the _on_gun_changed signal on Gun.gd
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 #Initializes vectors and values needed for shot calculation
-func _physics_process(delta):
+
+func _ready():
+	pass
+
+func _physics_process(delta):	
+	if dead:
+		pass
 	# var ShootVector = (get_global_mouse_position() - $".".position).normalized()
 	var deg = int(rad_to_deg($Pivot.get_rotation())) % 360
 	if deg < 0:
@@ -113,6 +120,7 @@ func getMaxPower() -> int:
 				return 500
 				
 func getShotCooldown() -> int:
+	return 0
 	match active_gun:
 			0: # revolver
 				return 30
@@ -120,15 +128,31 @@ func getShotCooldown() -> int:
 				return 60
 			_:
 				return 10
+
+func getReboundParticleAmount() -> int:
+	match active_gun:
+			0: # revolver
+				return 40
+			1: # shotgun
+				return 140
+			_:
+				return 10
+
+var gunProperties = {
+	0: {"max_power": 500, "shot_cooldown": 30, "rebound_particle_amount": 60}, # revolver
+	1: {"max_power": 700, "shot_cooldown": 60, "rebound_particle_amount": 100}, # shotgun
+}
 	
 func coolCalcRayCast(deg: int, maxPower: int) -> int:
 	var power = 0
 	var origin 	= raycast.global_transform.origin
 	if raycast.is_colliding():
 		var point = raycast.get_collision_point()
-		var particle_instance = load("res://scenes/rebound_particle.tscn").instantiate()
-		add_child(particle_instance)
+		var particle_instance : GPUParticles2D = load("res://scenes/rebound_particle.tscn").instantiate()
+		get_parent().add_child(particle_instance)
 		particle_instance.global_position = nozzle.global_position 
+		particle_instance.amount = getReboundParticleAmount()
+		
 		var distance = origin.distance_to(point)
 		particle_instance.global_rotation = raycast.global_rotation 
 		power = maxPower - distance
@@ -186,3 +210,11 @@ func calcRayCast(deg) -> int:
 
 func _on_gun_changed(gun_id):
 	active_gun = gun_id
+
+func die():
+	dead = true
+	var particle_instance : GPUParticles2D = load("res://scenes/hit_particle.tscn").instantiate()
+	add_child(particle_instance)
+	particle_instance.global_position = $CollisionShape2D/PlayerSprite/HeadBody.global_position + Vector2(0, -10)
+	
+	

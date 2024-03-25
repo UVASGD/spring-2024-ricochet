@@ -1,29 +1,29 @@
-[gd_scene load_steps=9 format=3 uid="uid://xnwkpxaws1p4"]
+[gd_scene load_steps=9 format=3 uid="uid://cj17dpxt4mbml"]
 
-[sub_resource type="Gradient" id="Gradient_dffjg"]
+[sub_resource type="Gradient" id="Gradient_v8ox8"]
 offsets = PackedFloat32Array(0, 0.971631)
-colors = PackedColorArray(0.944102, 0.904908, 0.0618039, 1, 1, 0.399592, 0.465987, 0.847059)
+colors = PackedColorArray(0.869715, 0, 0.0522759, 1, 0.498429, 2.64719e-07, 0.253468, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_1xoby"]
-gradient = SubResource("Gradient_dffjg")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yjvl4"]
+gradient = SubResource("Gradient_v8ox8")
 
-[sub_resource type="Curve" id="Curve_k8hro"]
+[sub_resource type="Curve" id="Curve_nmqj5"]
 _data = [Vector2(0.0406977, 1), 0.0, 0.0, 0, 0, Vector2(0.994186, 0.463158), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_eppal"]
-curve = SubResource("Curve_k8hro")
+[sub_resource type="CurveTexture" id="CurveTexture_jlyve"]
+curve = SubResource("Curve_nmqj5")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jk7q4"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a7a0q"]
 emission_shape = 1
 emission_sphere_radius = 1.0
 particle_flag_align_y = true
 particle_flag_rotate_y = true
 particle_flag_disable_z = true
-direction = Vector3(0, 0, 0)
-spread = 18.0
+direction = Vector3(0, -180, 0)
+spread = 119.63
 flatness = 1.0
-gravity = Vector3(0, 600, 0)
+gravity = Vector3(0, 1200, 0)
 initial_velocity_min = 71.42
 initial_velocity_max = 489.8
 orbit_velocity_min = 0.0
@@ -31,9 +31,9 @@ orbit_velocity_max = 0.0
 damping_min = 33.673
 damping_max = 33.673
 scale_min = 3.0
-scale_max = 7.0
-scale_curve = SubResource("CurveTexture_eppal")
-color_ramp = SubResource("GradientTexture1D_1xoby")
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_jlyve")
+color_ramp = SubResource("GradientTexture1D_yjvl4")
 anim_speed_max = 3.37
 
 [sub_resource type="Animation" id="Animation_klsro"]
@@ -53,7 +53,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_q7env"]
 resource_name = "default"
-length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -73,12 +72,24 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(2),
+"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"queue_free"
 }]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(9.84915, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ojns1"]
@@ -87,17 +98,14 @@ _data = {
 "default": SubResource("Animation_q7env")
 }
 
-[node name="fire_particle" type="GPUParticles2D"]
+[node name="gunfire_particle" type="GPUParticles2D"]
 position = Vector2(-1, -1)
 emitting = false
 amount = 20
-process_material = SubResource("ParticleProcessMaterial_jk7q4")
+process_material = SubResource("ParticleProcessMaterial_a7a0q")
 lifetime = 0.25
-one_shot = true
-explosiveness = 1.0
-randomness = 0.5
+explosiveness = 0.25
 trail_sections = 2
-trail_section_subdivisions = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "default"

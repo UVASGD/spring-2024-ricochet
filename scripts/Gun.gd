@@ -3,8 +3,11 @@ extends Node2D
 @onready var killRayCast := $Gun2/KillRayCast2D
 @onready var gunSprite := $Gun2/GunSprite
 @onready var pickupIcon := $"../PlayerPickupArea/PickupIcon"
+@onready var animationPlayer : AnimationPlayer = $"../PlayerPickupArea/PickupIcon/AnimationPlayer"
 @onready var nozzle := $"Gun2/Nozzle"
 @onready var player = get_parent()
+@onready var fireline : Line2D = $Gun2/Fireline
+@onready var endOfKillRayCast := $Gun2/KillRayCast2D/End
 
 var pickupableItem = null
 var nearbyArea: Area2D = null
@@ -12,7 +15,7 @@ var nearbyArea: Area2D = null
 var scenes = [load("res://scenes/revolver_pickup.tscn"), load("res://scenes/shotgun_pickup.tscn"), 
 load("res://scenes/sniper_pickup.tscn")]
 
-signal gun_changed(gun_id)
+signal gun_changed(gun_id) # this gets sent to player to change the active_gun variable on its script
 
 # Weapon names to weapon ids.
 enum weapons {REVOLVER = 0, SHOTGUN = 1, SNIPER = 2}
@@ -28,6 +31,11 @@ func _ready():
 		gun_storage[weapon_id] = false
 	gun_storage[weapons.REVOLVER] = true # start the player off with a revolver
 	swapGun(weapons.REVOLVER)
+
+func _draw():
+#	draw_line(Vector2(0,0), endOfKillRayCast.global_position - nozzle.global_position, Color(0, 0, 0), 1)
+	pass
+		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -90,6 +98,7 @@ func remove_gun(id: int) -> void:
 func _on_pickup_area_area_entered(area: Area2D):
 	if area.name == "PickupArea":
 		pickupIcon.show()
+		animationPlayer.play("appear_and_bounce")
 		nearbyArea = area
 		# For all pickups, please name them in the format of Name_Pickup
 		var parentName: String = area.get_parent().name
@@ -101,4 +110,4 @@ func _on_player_pickup_area_area_exited(area: Area2D):
 		pickupIcon.hide()
 		pickupableItem = null
 		nearbyArea = null
-		
+

@@ -2,27 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3dl3vapbbyyf"
-path.s3tc="res://.godot/imported/1stGuy.png-28526f9958ca4a6d783bc6bc8409d88c.s3tc.ctex"
+uid="uid://cqkkb7bs88bvh"
+path="res://.godot/imported/whitebar.png-69742e8a0bc25ba6a4e1d6dcbea9599c.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/1stGuy.png"
-dest_files=["res://.godot/imported/1stGuy.png-28526f9958ca4a6d783bc6bc8409d88c.s3tc.ctex"]
+source_file="res://images/whitebar.png"
+dest_files=["res://.godot/imported/whitebar.png-69742e8a0bc25ba6a4e1d6dcbea9599c.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -32,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

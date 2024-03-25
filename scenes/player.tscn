@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3w74knuobnpg"]
+[gd_scene load_steps=17 format=3 uid="uid://d3w74knuobnpg"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_op0tq"]
 [ext_resource type="Texture2D" uid="uid://3dl3vapbbyyf" path="res://images/1stGuy.png" id="2_cb8at"]
@@ -14,6 +14,48 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_il0p2"]
 size = Vector2(19, 26)
+
+[sub_resource type="Animation" id="Animation_cvffb"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_j0tbe"]
+resource_name = "appear_and_bounce"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(0.0525564, 1, 26.9087),
+"update": 0,
+"values": [Vector2(-44, 13), Vector2(-44, 10), Vector2(-44, 13)]
+}
+
+[sub_resource type="Animation" id="Animation_inkxa"]
+resource_name = "fade"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ntj3l"]
+_data = {
+"RESET": SubResource("Animation_cvffb"),
+"appear_and_bounce": SubResource("Animation_j0tbe"),
+"fade": SubResource("Animation_inkxa")
+}
 
 [sub_resource type="QuadMesh" id="QuadMesh_4nh5r"]
 
@@ -81,6 +123,9 @@ scale = Vector2(1, 0.75)
 texture = ExtResource("6_y0nri")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D/PlayerPickupArea/PickupIcon"]
+libraries = {
+"": SubResource("AnimationLibrary_ntj3l")
+}
 
 [node name="Pivot" type="Node2D" parent="CharacterBody2D"]
 position = Vector2(-2, -1)
@@ -99,9 +144,6 @@ texture = ExtResource("3_m6ad3")
 
 [node name="Gun2" parent="CharacterBody2D/Pivot" instance=ExtResource("5_dfevr")]
 position = Vector2(15, 0)
-
-[node name="Nozzle" type="Node2D" parent="CharacterBody2D/Pivot/Gun2"]
-position = Vector2(9, -1)
 
 [connection signal="area_entered" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_pickup_area_area_entered"]
 [connection signal="area_exited" from="CharacterBody2D/PlayerPickupArea" to="CharacterBody2D/Pivot" method="_on_player_pickup_area_area_exited"]

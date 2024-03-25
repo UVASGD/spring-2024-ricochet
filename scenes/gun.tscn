@@ -41,9 +41,15 @@ target_position = Vector2(-8.74228e-07, 20)
 rotation = 3.14159
 target_position = Vector2(-204, -0.00147696)
 
+[node name="End" type="Node2D" parent="KillRayCast2D"]
+position = Vector2(-201, 1.7572e-05)
+
 [node name="GunSprite" type="AnimatedSprite2D" parent="."]
 rotation = -3.14159
 scale = Vector2(0.6, 0.6)
 sprite_frames = SubResource("SpriteFrames_hgev0")
 animation = &"shotgun"
 flip_v = true
+
+[node name="Nozzle" type="Node2D" parent="."]
+position = Vector2(7, -1)
